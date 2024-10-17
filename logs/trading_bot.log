@@ -1,0 +1,130 @@
+2024-10-17 22:30:08,074 - __main__ - INFO - Starting Ying Yang Trading Bot...
+2024-10-17 22:30:08,078 - classes.data_manager - INFO - Upbit client initialized successfully.
+2024-10-17 22:30:08,450 - classes.data_manager - INFO - Balance for KRW: 10809185.96772573
+2024-10-17 22:30:08,451 - classes.position_manager - INFO - PositionManager initialized with balance: 10809185.96772573 KRW and Kelly fraction: 0.5
+2024-10-17 22:30:08,672 - classes.notion_manager - INFO - Notion client initialized successfully.
+2024-10-17 22:30:08,673 - classes.slack_notifier - INFO - SlackNotifier initialized successfully.
+2024-10-17 22:30:08,674 - __main__ - INFO - Updating initial account balance to Notion...
+2024-10-17 22:30:08,958 - classes.data_manager - INFO - Balance for KRW: 10809185.96772573
+2024-10-17 22:30:09,251 - classes.data_manager - INFO - Total coin value: 0 KRW
+2024-10-17 22:30:09,556 - classes.data_manager - INFO - Fetched all balances successfully.
+2024-10-17 22:30:09,556 - __main__ - INFO - Collected coins data: {}
+2024-10-17 22:30:09,557 - classes.notion_manager - INFO - Recording KRW Balance: 10809185.96772573, Total Coin Value: 0
+2024-10-17 22:30:09,558 - classes.notion_manager - INFO - No coin balances to record.
+2024-10-17 22:30:10,338 - httpx - INFO - HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+2024-10-17 22:30:10,340 - classes.notion_manager - INFO - Account balance recorded with page ID: 1228fb03-defa-8162-81f0-cdbaf8586073
+2024-10-17 22:30:10,341 - classes.notion_manager - INFO - KRW balance and coin balances recorded to Notion successfully.
+2024-10-17 22:30:10,341 - __main__ - INFO - Initial KRW balance and coin balances updated to Notion.
+2024-10-17 22:30:10,342 - __main__ - INFO - Bot is scheduled to run every hour at :00 and :30 minutes.
+2024-10-17 22:30:10,342 - __main__ - INFO - Sending start message to Slack...
+2024-10-17 22:30:12,346 - classes.slack_notifier - INFO - Slack notification sent successfully.
+2024-10-17 22:30:12,347 - __main__ - INFO - Start message sent.
+2024-10-17 22:33:01,916 - __main__ - INFO - Starting Ying Yang Trading Bot...
+2024-10-17 22:33:01,917 - classes.data_manager - INFO - Upbit client initialized successfully.
+2024-10-17 22:33:02,238 - classes.data_manager - INFO - Balance for KRW: 10809185.96772573
+2024-10-17 22:33:02,239 - classes.position_manager - INFO - PositionManager initialized with balance: 10809185.96772573 KRW and Kelly fraction: 0.5
+2024-10-17 22:33:02,461 - classes.notion_manager - INFO - Notion client initialized successfully.
+2024-10-17 22:33:02,462 - classes.slack_notifier - INFO - SlackNotifier initialized successfully.
+2024-10-17 22:33:02,462 - __main__ - INFO - Updating initial account balance to Notion...
+2024-10-17 22:33:02,743 - classes.data_manager - INFO - Balance for KRW: 10809185.96772573
+2024-10-17 22:33:03,027 - classes.data_manager - INFO - Total coin value: 0 KRW
+2024-10-17 22:33:03,313 - classes.data_manager - INFO - Fetched all balances successfully.
+2024-10-17 22:33:03,313 - __main__ - INFO - Collected coins data: {}
+2024-10-17 22:33:03,314 - classes.notion_manager - INFO - Recording KRW Balance: 10809185.96772573, Total Coin Value: 0
+2024-10-17 22:33:03,314 - classes.notion_manager - INFO - No coin balances to record.
+2024-10-17 22:33:04,120 - httpx - INFO - HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+2024-10-17 22:33:04,121 - classes.notion_manager - INFO - Account balance recorded with page ID: 1228fb03-defa-8198-9555-d7b256f2db3f
+2024-10-17 22:33:04,121 - classes.notion_manager - INFO - KRW balance and coin balances recorded to Notion successfully.
+2024-10-17 22:33:04,122 - __main__ - INFO - Initial KRW balance and coin balances updated to Notion.
+2024-10-17 22:33:04,123 - __main__ - INFO - Bot is scheduled to run every hour at :00 and :30 minutes.
+2024-10-17 22:33:04,124 - __main__ - INFO - Sending start message to Slack...
+2024-10-17 22:33:04,671 - classes.slack_notifier - INFO - Slack notification sent successfully.
+2024-10-17 22:33:04,673 - __main__ - INFO - Start message sent.
+2024-10-17 22:49:36,235 - __main__ - INFO - Starting Ying Yang Trading Bot...
+2024-10-17 22:49:36,235 - classes.data_manager - INFO - Upbit client initialized successfully.
+2024-10-17 22:49:36,555 - classes.data_manager - INFO - Balance for KRW: 10809185.96772573
+2024-10-17 22:49:36,555 - classes.position_manager - INFO - PositionManager initialized with balance: 10809185.96772573 KRW and Kelly fraction: 0.5
+2024-10-17 22:49:36,778 - classes.notion_manager - INFO - Notion client initialized successfully.
+2024-10-17 22:49:36,778 - classes.slack_notifier - INFO - SlackNotifier initialized successfully.
+2024-10-17 22:49:36,778 - __main__ - INFO - Updating initial account balance to Notion...
+2024-10-17 22:49:37,057 - classes.data_manager - INFO - Balance for KRW: 10809185.96772573
+2024-10-17 22:49:37,338 - classes.data_manager - INFO - Total coin value: 0 KRW
+2024-10-17 22:49:37,608 - classes.data_manager - INFO - Fetched all balances successfully.
+2024-10-17 22:49:37,608 - __main__ - INFO - Collected coins data: {}
+2024-10-17 22:49:37,608 - classes.notion_manager - INFO - Recording KRW Balance: 10809185.96772573, Total Coin Value: 0
+2024-10-17 22:49:37,608 - classes.notion_manager - INFO - No coin balances to record.
+2024-10-17 22:49:40,732 - httpx - INFO - HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+2024-10-17 22:49:40,732 - classes.notion_manager - INFO - Account balance recorded with page ID: 1228fb03-defa-81e9-bcb3-f45ba72f07bb
+2024-10-17 22:49:40,732 - classes.notion_manager - INFO - KRW balance and coin balances recorded to Notion successfully.
+2024-10-17 22:49:40,732 - __main__ - INFO - Initial KRW balance and coin balances updated to Notion.
+2024-10-17 22:49:40,740 - __main__ - INFO - Bot is scheduled to run every hour at :00 and :30 minutes.
+2024-10-17 22:49:40,741 - __main__ - INFO - Sending start message to Slack...
+2024-10-17 22:49:41,356 - classes.slack_notifier - INFO - Slack notification sent successfully.
+2024-10-17 22:49:41,356 - __main__ - INFO - Start message sent.
+2024-10-17 23:00:00,009 - __main__ - INFO - Running trading strategy...
+2024-10-17 23:00:00,010 - classes.data_manager - ERROR - Failed to fetch historical data: 'Upbit' object has no attribute 'get_ohlcv'
+2024-10-17 23:00:00,011 - __main__ - ERROR - Error during trading execution: 'Upbit' object has no attribute 'get_ohlcv'
+2024-10-17 23:00:00,617 - classes.slack_notifier - INFO - Slack notification sent successfully.
+2024-10-17 23:12:17,797 - __main__ - INFO - Starting Ying Yang Trading Bot...
+2024-10-17 23:12:17,799 - classes.data_manager - INFO - Upbit client initialized successfully.
+2024-10-17 23:12:18,131 - classes.data_manager - INFO - Balance for KRW: 10809185.96772573
+2024-10-17 23:12:18,131 - classes.position_manager - INFO - PositionManager initialized with balance: 10809185.96772573 KRW and Kelly fraction: 0.5
+2024-10-17 23:12:18,354 - classes.notion_manager - INFO - Notion client initialized successfully.
+2024-10-17 23:12:18,355 - classes.slack_notifier - INFO - SlackNotifier initialized successfully.
+2024-10-17 23:12:18,355 - __main__ - INFO - Updating initial account balance to Notion...
+2024-10-17 23:12:18,628 - classes.data_manager - INFO - Balance for KRW: 10809185.96772573
+2024-10-17 23:12:18,899 - classes.data_manager - INFO - Total coin value: 0 KRW
+2024-10-17 23:12:19,178 - classes.data_manager - INFO - Fetched all balances successfully.
+2024-10-17 23:12:19,178 - __main__ - INFO - Collected coins data: {}
+2024-10-17 23:12:19,179 - classes.notion_manager - INFO - Recording KRW Balance: 10809185.96772573, Total Coin Value: 0
+2024-10-17 23:12:19,179 - classes.notion_manager - INFO - No coin balances to record.
+2024-10-17 23:12:20,526 - httpx - INFO - HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+2024-10-17 23:12:20,533 - classes.notion_manager - INFO - Account balance recorded with page ID: 1228fb03-defa-8182-b82b-e4864638fe6c
+2024-10-17 23:12:20,534 - classes.notion_manager - INFO - KRW balance and coin balances recorded to Notion successfully.
+2024-10-17 23:12:20,534 - __main__ - INFO - Initial KRW balance and coin balances updated to Notion.
+2024-10-17 23:12:20,535 - __main__ - INFO - Bot is scheduled to run every hour at :00 and :30 minutes.
+2024-10-17 23:12:20,535 - __main__ - INFO - Sending start message to Slack...
+2024-10-17 23:12:21,227 - classes.slack_notifier - INFO - Slack notification sent successfully.
+2024-10-17 23:12:21,229 - __main__ - INFO - Start message sent.
+2024-10-17 23:30:00,685 - __main__ - INFO - Running trading strategy...
+2024-10-17 23:30:00,962 - classes.data_manager - INFO - Historical data for KRW-BTC fetched successfully.
+2024-10-17 23:30:00,966 - classes.indicator - INFO - YingYang indicators calculated successfully.
+2024-10-17 23:30:00,971 - classes.strategy - INFO - Sell signal generated at index 2024-10-16 14:00:00, Price: 90893000.0 KRW.
+2024-10-17 23:30:00,971 - classes.strategy - INFO - Sell signal generated at index 2024-10-16 16:00:00, Price: 90609000.0 KRW.
+2024-10-17 23:30:00,972 - classes.strategy - INFO - Sell signal generated at index 2024-10-17 05:30:00, Price: 91501000.0 KRW.
+2024-10-17 23:30:00,973 - classes.strategy - INFO - Signals generated successfully.
+2024-10-17 23:30:00,974 - __main__ - INFO - Latest signal: 0, Current price: 91423000.0 KRW.
+2024-10-18 00:00:00,905 - __main__ - INFO - Running trading strategy...
+2024-10-18 00:00:01,338 - classes.data_manager - INFO - Historical data for KRW-BTC fetched successfully.
+2024-10-18 00:00:01,338 - classes.indicator - INFO - YingYang indicators calculated successfully.
+2024-10-18 00:00:01,338 - classes.strategy - INFO - Sell signal generated at index 2024-10-16 15:00:00, Price: 90799000.0 KRW.
+2024-10-18 00:00:01,338 - classes.strategy - INFO - Sell signal generated at index 2024-10-16 21:30:00, Price: 91707000.0 KRW.
+2024-10-18 00:00:01,346 - classes.strategy - INFO - Sell signal generated at index 2024-10-17 05:30:00, Price: 91501000.0 KRW.
+2024-10-18 00:00:01,346 - classes.strategy - INFO - Signals generated successfully.
+2024-10-18 00:00:01,346 - __main__ - INFO - Latest signal: 0, Current price: 91573000.0 KRW.
+2024-10-18 00:04:30,018 - __main__ - INFO - Starting Ying Yang Trading Bot...
+2024-10-18 00:04:30,018 - classes.data_manager - INFO - Upbit client initialized successfully.
+2024-10-18 00:04:30,330 - classes.data_manager - INFO - Balance for KRW: 10809185.96772573
+2024-10-18 00:04:30,330 - classes.position_manager - INFO - PositionManager initialized with balance: 10809185.96772573 KRW and Kelly fraction: 0.5
+2024-10-18 00:04:30,551 - classes.notion_manager - INFO - Notion client initialized successfully.
+2024-10-18 00:04:30,551 - classes.slack_notifier - INFO - SlackNotifier initialized successfully.
+2024-10-18 00:04:30,551 - __main__ - INFO - Updating initial account balance to Notion...
+2024-10-18 00:04:30,851 - classes.data_manager - INFO - Balance for KRW: 10809185.96772573
+2024-10-18 00:04:31,149 - classes.data_manager - INFO - Total coin value: 0 KRW
+2024-10-18 00:04:31,437 - classes.data_manager - INFO - Fetched all balances successfully.
+2024-10-18 00:04:31,437 - __main__ - INFO - Collected coins data: {}
+2024-10-18 00:04:31,437 - classes.notion_manager - INFO - Recording KRW Balance: 10809185.96772573, Total Coin Value: 0
+2024-10-18 00:04:31,437 - classes.notion_manager - INFO - No coin balances to record.
+2024-10-18 00:04:33,870 - httpx - INFO - HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+2024-10-18 00:04:33,870 - classes.notion_manager - INFO - Account balance recorded with page ID: 1228fb03-defa-8191-9aa3-cbe09783d9b9
+2024-10-18 00:04:33,870 - classes.notion_manager - INFO - KRW balance and coin balances recorded to Notion successfully.
+2024-10-18 00:04:33,870 - __main__ - INFO - Initial KRW balance and coin balances updated to Notion.
+2024-10-18 00:04:33,870 - __main__ - INFO - Bot is scheduled to run every hour at :00 and :30 minutes.
+2024-10-18 00:04:33,870 - __main__ - INFO - Sending start message to Slack...
+2024-10-18 00:04:34,449 - classes.slack_notifier - INFO - Slack notification sent successfully.
+2024-10-18 00:04:34,449 - __main__ - INFO - Start message sent.
+2024-10-18 00:30:00,271 - __main__ - INFO - Running trading strategy...
+2024-10-18 00:30:00,542 - classes.data_manager - INFO - Historical data for KRW-BTC fetched successfully.
+2024-10-18 00:30:00,546 - classes.indicator - INFO - YingYang indicators calculated successfully.
+2024-10-18 00:30:00,546 - classes.strategy - INFO - Signals generated successfully.
+2024-10-18 00:30:00,546 - __main__ - INFO - Latest signal: 0, Current price: 91658000.0 KRW.
