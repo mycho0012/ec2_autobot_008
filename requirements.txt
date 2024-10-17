@@ -1,0 +1,7 @@
+numpy
+pandas
+pyupbit
+requests
+python-dotenv
+notion-client
+schedule
