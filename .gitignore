@@ -1,1 +1,6 @@
-.env
+# Ignore environment variable files
+config/.env
+
+# Ignore log files
+logs/
+
