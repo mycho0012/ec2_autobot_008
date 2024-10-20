@@ -1,7 +1,6 @@
 # notion_manager.py
 import os
 import logging
-from turtle import position
 from notion_client import Client
 from datetime import datetime
 import pandas as pd
