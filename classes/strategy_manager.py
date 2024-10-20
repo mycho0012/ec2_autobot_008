@@ -1,6 +1,4 @@
 # strategy_manager.py
-from tkinter import N
-from turtle import position
 import pandas as pd
 import numpy as np
 import pyupbit
