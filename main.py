@@ -1,175 +1,139 @@
-# main.py
-import os
-import logging
-import time
+# main.py 
+import pandas as pd
+import numpy as np  
+import pyupbit
+import time 
+import datetime
 import schedule
+import os
+import signal
 from dotenv import load_dotenv
 from classes.data_manager import DataManager
-from classes.indicator import YingYangIndicator
-from classes.strategy import TradingStrategy
-from classes.position_manager import PositionManager
+from classes.position_manager import PositionManager    
+from classes.strategy_manager import StrategyManager
+from classes.indicator_manager import IndicatorManager
 from classes.notion_manager import NotionManager
-from classes.slack_notifier import SlackNotifier
+from classes.slack_manager import SlackManager
 
-def setup_logging():
-    if not os.path.exists('logs'):
-        os.makedirs('logs')
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler("logs/trading_bot.log"),
-            logging.StreamHandler()
-        ]
-    )
+# Global variable to control the bot's execution
+running = True
 
-def main():
-    setup_logging()
-    logger = logging.getLogger(__name__)
-    logger.info("Starting Ying Yang Trading Bot...")
+# Global variables for manager instances
+data_manager = None
+indicator_manager = None
+position_manager = None
+strategy_manager = None
+notion_manager = None
+slack_manager = None
 
-    # Load environment variables
-    load_dotenv(dotenv_path=os.path.join('config', '.env'))
+def signal_handler(signum, frame):
+    global running
+    print("Received termination signal. Stopping the bot...")
+    running = False
 
-    # Initialize classes
-    data_manager = DataManager(
-        access_key=os.getenv("ACCESS_KEY"),
-        secret_key=os.getenv("SECRET_KEY")
-    )
-    indicator = YingYangIndicator(
-        window=20,
-        span=10,
-        pan_band_multiplier=2
-    )
-    strategy = TradingStrategy()
-    initial_balance = data_manager.get_balance("KRW")  # Get KRW balance
-    if initial_balance is None:
-        logger.error("Failed to retrieve initial KRW balance.")
-        return
-    position_manager = PositionManager(initial_balance=initial_balance)
+def initialize_bot():
+    global data_manager, indicator_manager, position_manager, strategy_manager, notion_manager, slack_manager
+
+    # load sensitive api stored in the env file for the further process
+    load_dotenv(dotenv_path=os.path.join("config",".env"))
+    access_key = os.getenv("ACCESS_KEY")
+    secret_key = os.getenv("SECRET_KEY")
+    ticker = "KRW-BTC"
+    interval = "minute30"
+    count = 300
+    max_loss_pct = 0.05
+
+    # assign class function and ready to use method in the classes
+    data_manager = DataManager(access_key=access_key, secret_key=secret_key,ticker=ticker,interval=interval,count=count)
+    indicator_manager = IndicatorManager(window=20,span=10,multiplier=2)
+    position_manager = PositionManager()
+    strategy_manager = StrategyManager() 
     notion_manager = NotionManager()
-    slack_notifier = SlackNotifier(
+    slack_manager = SlackManager(
         webhook_url=os.getenv("SLACK_WEBHOOK_URL")
     )
 
-    # Update initial account balance and coin balances to Notion
-    try:
-        logger.info("Updating initial account balance to Notion...")
-        krw_balance = data_manager.get_balance("KRW")
-        total_coin_value = data_manager.calculate_total_coin_value()  # Calculate total coin value
-        if krw_balance is not None:
-            # Fetch each coin's balance and current price
-            coin_balances = data_manager.get_balances()
-            coins = {}
-            for coin in coin_balances:
-                if coin['currency'] == 'KRW':
-                    continue
-                symbol = f"KRW-{coin['currency']}"
-                balance = float(coin['balance'])
-                current_price = data_manager.get_current_price(symbol)
-                coins[coin['currency']] = {'balance': balance, 'current_price': current_price}
-            # Log the collected coins data for debugging
-            logger.info(f"Collected coins data: {coins}")
-            notion_manager.record_account_balance(krw_balance, total_coin_value, coins)
-            logger.info("Initial KRW balance and coin balances updated to Notion.")
-        else:
-            logger.error("Failed to retrieve KRW balance from Upbit.")
-    except Exception as e:
-        logger.error(f"Error updating Notion with initial balance: {e}")
-        slack_notifier.send_message(f"ERROR: {e}")
+    # Record initial account balance
+    initial_balance = data_manager.get_account_balance()
+    initial_coins = data_manager.get_coin_balance()
+    coin_balance = int(initial_coins.loc[initial_coins.index[0], 'coin_balance'])
+    current_price = int(initial_coins.loc[initial_coins.index[0], 'current_price'])
+    notion_manager.record_account_balance(int(initial_balance), initial_coins.index[0], coin_balance, current_price)
 
-    # Define trading execution function
-    def run_trading():
-        try:
-            logger.info("Running trading strategy...")
-            # Fetch historical data
-            price_data = data_manager.get_historical_data()
-            if price_data is None or price_data.empty:
-                logger.warning("No price data fetched. Skipping this cycle.")
-                return
+    print(f"Bot initialized at {datetime.datetime.now()}.")
+    slack_manager.send_message(f"Bot initialized at {datetime.datetime.now()}. Initial balance: {initial_balance} KRW, Current price: {current_price} KRW.")
 
-            # Calculate indicators
-            indicators = indicator.calculate(price_data)
+def run_bot():
+    global data_manager, indicator_manager, position_manager, strategy_manager, notion_manager, slack_manager
 
-            # Generate signals
-            signals = strategy.generate_signals(indicators, price_data)
+    ticker = "KRW-BTC"
+    interval = "minute30"
+    count = 300
+    max_loss_pct = 0.05
 
-            # Process the latest signal
-            latest_signal = signals.iloc[-1]['Signal']
-            current_price = price_data['close'].iloc[-1]
-            logger.info(f"Latest signal: {latest_signal}, Current price: {current_price} KRW.")
+    # get historical data per input arguments
+    prices = data_manager.get_historical_data(ticker,interval,count)
+    # Calculate indicators
+    indicators = indicator_manager.calculate_indicator(prices)
+    # Calculate Kelly value and initial investment amount
+    kelly = position_manager.kelly_fraction()
+    initial_balance = data_manager.get_account_balance()
+    initial_coins = data_manager.get_coin_balance()
+    invested_amount = initial_balance * kelly
+    entry_data = strategy_manager.entry_condition(indicators) 
+    exit_data = strategy_manager.exit_condition(entry_data)
+        
+    coin_balance = int(initial_coins.loc[initial_coins.index[0], 'coin_balance'])
+    current_price = int(initial_coins.loc[initial_coins.index[0], 'current_price'])
+    max_loss = int(current_price*max_loss_pct)
 
-            if latest_signal == 1 and position_manager.position == "neutral":
-                # Buy signal and no current position
-                position_size = position_manager.enter_position(current_price)
-                # Execute buy order (actual order logic required)
-                data_manager.upbit.buy_market_order('KRW-BTC', position_size)
-                logger.info(f"Executing Buy Order at {current_price} KRW for {position_size} BTC.")
-                # Record trade log
-                notion_manager.create_trade_log({
-                    'trade_id': f"buy_{int(time.time())}",  # Replace with actual trade ID
-                    'type': 'Buy',
-                    'timestamp': price_data.index[-1],
-                    'symbol': 'KRW-BTC',
-                    'price': current_price,
-                    'quantity': position_size,
-                    'fee': 0.0,  # Reflect actual fees
-                    'status': 'Completed',
-                    'strategy': 'YingYangVolatility',
-                    'notes': 'Buy signal triggered.'
-                })
-                slack_notifier.send_message(f"Buy order executed at {current_price} KRW for {position_size} BTC.")
+    # execution trades
+    trade_log = position_manager.execution_trade(data_manager,entry_data,exit_data,invested_amount,coin_balance,max_loss)
+    
+    # Check if a new position (long or short) was opened and update Notion
+    if isinstance(trade_log, pd.DataFrame) and not trade_log.empty:
+        trade_type = trade_log['type'].iloc[0]
+        if trade_type in ['long', 'short']:
+            updated_balance = data_manager.get_account_balance()
+            updated_coins = data_manager.get_coin_balance()
+            updated_coin_balance = int(updated_coins.loc[updated_coins.index[0], 'coin_balance'])
+            updated_current_price = int(updated_coins.loc[updated_coins.index[0], 'current_price'])
+            notion_manager.record_account_balance(int(updated_balance), updated_coins.index[0], updated_coin_balance, updated_current_price)
+            print(f"New {trade_type} position opened. Updated Notion with new account balance.")
+    
+    # Create trade log in Notion
+    notion_manager.create_trade_log(trade_log)
+    
+    slack_manager.send_message(f"Bot running completed at {datetime.datetime.now()}. Current price: {current_price} KRW, Invested amount: {invested_amount} KRW.")
 
-            elif latest_signal == -1 and position_manager.position == "long":
-                # Sell signal and current long position
-                position_size = position_manager.current_position_size  # Ensure this attribute exists
-                profit_loss = position_manager.exit_position(current_price, reason="sell")
-                # Execute sell order (actual order logic required)
-                data_manager.upbit.sell_market_order('KRW-BTC', position_size)
-                logger.info(f"Executing Sell Order at {current_price} KRW for {position_size} BTC.")
-                # Record trade log
-                notion_manager.create_trade_log({
-                    'trade_id': f"sell_{int(time.time())}",  # Replace with actual trade ID
-                    'type': 'Sell',
-                    'timestamp': price_data.index[-1],
-                    'symbol': 'KRW-BTC',
-                    'price': current_price,
-                    'quantity': position_size,
-                    'fee': 0.0,  # Reflect actual fees
-                    'status': 'Completed',
-                    'strategy': 'YingYangVolatility',
-                    'notes': 'Sell signal triggered.',
-                    'profit_loss': profit_loss
-                })
-                slack_notifier.send_message(f"Sell order executed at {current_price} KRW for {position_size} BTC.")
+def time_until_next_30min():
+    now = datetime.datetime.now()
+    minutes_to_next = 30 - (now.minute % 30)
+    seconds_to_next = minutes_to_next * 60 - now.second
+    return seconds_to_next
 
-            # Risk management check
-            exit_reason = position_manager.check_risk_management(current_price)
-            if exit_reason:
-                # Additional logic needed when exiting due to risk management
-                # Trade log already handled in position_manager
-                slack_notifier.send_message(f"Position exited due to {exit_reason} at {current_price} KRW.")
+def main():
+    global running
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
 
-        except Exception as e:
-            logger.error(f"Error during trading execution: {e}")
-            slack_notifier.send_message(f"ERROR: {e}")
+    print("Bot starting. Press Ctrl+C to stop.")
+    
+    initialize_bot()
 
-    # Schedule trading execution: every hour at :00 and :30 minutes
-    schedule.every().hour.at(":00").do(run_trading)
-    schedule.every().hour.at(":30").do(run_trading)
+    while running:
+        run_bot()
+        wait_time = time_until_next_30min()
+        minutes, seconds = divmod(wait_time, 60)
+        
+        print(f"Waiting for {minutes} minutes and {seconds} seconds until next execution. Current time: {datetime.datetime.now()}")
+        
+        for _ in range(wait_time):
+            if not running:
+                break
+            time.sleep(1)  # Sleep for 1 second, check running status every second
 
-    logger.info("Bot is scheduled to run every hour at :00 and :30 minutes.")
-
-    # Send bot start message to Slack
-    initial_message = "YingYang Trading Bot has started successfully. Next run in 30 minutes."
-    logger.info("Sending start message to Slack...")
-    slack_notifier.send_message(initial_message)
-    logger.info("Start message sent.")
-
-    # Execute scheduled tasks
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    print("Bot terminated.")
 
 if __name__ == "__main__":
     main()
